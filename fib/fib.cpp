@@ -4,7 +4,7 @@
 #include <vector>
 #include <sstream>
 
-long long fib(int n_val, std::vector<long long> & mem) 
+unsigned long long fib(int n_val, std::vector<unsigned long long> & mem) 
 {
     if (n_val <= 1) {
         return n_val;
@@ -16,13 +16,18 @@ long long fib(int n_val, std::vector<long long> & mem)
 }
 
 int main(int argc, char * argv[]) {
+    if (argc == 1) {
+        std::cerr << "argument required" << std::endl;
+        return -1;
+    }
     std::string size_str(argv[1]);
     std::stringstream cnvt(size_str);
-    long long size = 0;
+    unsigned long long size = 0;
     cnvt >> size;
 
-    std::vector<long long> memory(size, 0);
+    std::vector<unsigned long long> memory(size, 0);
     std::cout << "FIB of " << size << " is " << fib(size, memory) << std::endl;
+    std::cout.precision(12);
     std::cout << "PHI of " << size << " is " << static_cast<double>(memory[size-1]) / static_cast<double>(memory[size-2]) << std::endl;
 }
 
