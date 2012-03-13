@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-int main(int argc, char * argv) {
+int main(int argc, char * argv[]) {
     int counter;
     for (counter = 1; counter <= 100; ++counter) {
         std::string msg;
