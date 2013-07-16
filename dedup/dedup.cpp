@@ -3,6 +3,21 @@
 #include <iostream>
 #include <string>
 
+/*
+ * Function: dedup
+ *
+ * Description: Given a c-string, eliminates any consequetive 
+ * (repeating) characters. The string is modified in place, so 
+ * must be non-const. The function returns the count of duplicates removed
+ *
+ * Implementation: Iterate over the string with two pointers - a "read" pointer
+ * and a "write" pointer. The reader is always incremented, the writer is only 
+ * incremented when we encounter a non-consequetive (unique) character.
+ *
+ * TODO: This implementation only works for single byte character sets. 
+ * Might want to consider adding utf-8 support (MBCS).
+ *
+ */
 static int dedup(char * str)
 {
     int removed = 0;
