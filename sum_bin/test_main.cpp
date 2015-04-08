@@ -2,6 +2,9 @@
 #include <iostream>
 #include <iomanip>
 
+//
+// TODO convert to libcheck
+// 
 using namespace std;
 
 /*
