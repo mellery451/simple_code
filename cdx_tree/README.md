@@ -32,18 +32,10 @@ Building
 
 Prerequisites:
 
-  * gcc
-  * libtool
-  * autoconf
-  * automake
-  * check (to build tests)
+  * cmake
+  * libcheck (to build tests)
 
 To build and install:
 
-    $ sh autogen.sh
-    $ ./configure
-    $ make
-    $ make test
+    run top level cmake, then make, make test
 
-    I have not tested the 'install' target (there is no point for this code) - use with caution (it's probably incorrect).
-  
