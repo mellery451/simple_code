@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.1)
- 
+
 project(simple_code)
 
+message(" == c flags == ${CMAKE_CXX_FLAGS}")
+message(" == dc flags == ${CMAKE_CXX_FLAGS_DEBUG}")
+message(" == rc flags == ${CMAKE_CXX_FLAGS_RELEASE}")
+message(" == 1l flags == ${CMAKE_EXE_LINKER_FLAGS}")
+message(" == d1l flags == ${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+message(" == r1l flags == ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+message(" == 2l flags == ${CMAKE_SHARED_LINKER_FLAGS}")
+message(" == d2l flags == ${CMAKE_SHARED_LINKER_FLAGS_DEBUG}")
+message(" == 3l flags == ${CMAKE_STATIC_LINKER_FLAGS}")
+message(" == d3l flags == ${CMAKE_STATIC_LINKER_FLAGS_DEBUG}")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR};${CMAKE_MODULE_PATH}")
 
 enable_testing()
@@ -17,5 +27,6 @@ add_executable(fizz_buzz fizz_buzz/fizz_buzz.cpp)
 add_executable(get_my_ip get_my_ip/get_ip.cpp)
 add_executable(hex_to hex_to/hex_to.cpp)
 add_executable(rev_words rev_words/rev_words.cpp)
+add_executable(ns_thing namespace_thing/test.cpp)
 
 
