@@ -1,0 +1,15 @@
+
+use strict;
+use warnings;
+use Modern::Perl;
+
+while(my $word = <>) {
+    chomp($word);
+    my $score = 0;
+    foreach (split('', lc($word))) {
+        $score += ord($_) - ord('a') +1;
+    }
+    if ($score == 100) {
+        say "$score: $word";
+    }
+}

@@ -7,6 +7,8 @@
 // compile with:
 //      g++ ptr_access.cpp -O3 -std=c++11
 
+const uint32_t loop_count = 10000;
+
 using namespace std;
 
 class Print {
@@ -35,7 +37,7 @@ void test() {
   //-------------test shared_ptr-------------------------
   auto time_sh_1 = std::chrono::system_clock::now();
 
-  for (auto var = 0; var < 1000; ++var) {
+  for (auto var = 0; var < loop_count; ++var) {
     for (auto it = shvec.begin(), end = shvec.end(); it != end; ++it) {
       (*it)->print();
     }
@@ -49,7 +51,7 @@ void test() {
   //-------------test unique_ptr-------------------------
   auto time_u_1 = std::chrono::system_clock::now();
 
-  for (auto var = 0; var < 1000; ++var) {
+  for (auto var = 0; var < loop_count; ++var) {
     for (auto it = uvec.begin(), end = uvec.end(); it != end; ++it) {
       (*it)->print();
     }
@@ -63,7 +65,7 @@ void test() {
   //-------------test raw ptr-------------------------
   auto time_r_1 = std::chrono::system_clock::now();
 
-  for (auto var = 0; var < 1000; ++var) {
+  for (auto var = 0; var < loop_count; ++var) {
     for (auto it = rvec.begin(), end = rvec.end(); it != end; ++it) {
       (*it)->print();
     }
