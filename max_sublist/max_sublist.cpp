@@ -10,6 +10,20 @@
 typedef std::vector<int> number_array;
 typedef std::tuple<size_t, size_t, int> vector_slice;
 
+/// @brief find_max_slice
+///
+///Kadane's algorithm
+///
+/// Kadane's algorithm consists of a scan through the array values, computing
+/// at each position the maximum (positive sum) subarray ending at that
+/// position. This subarray is either empty (in which case its sum is zero) or
+/// consists of one more element than the maximum subarray ending at the
+/// previous position.
+///
+/// @see https://en.wikipedia.org/wiki/Maximum_subarray_problem
+/// @param nums vector of ints for which we want ot find the max slice (subarray)
+///
+/// @return tuple of start_index, end_index, sum for the max_slice found
 vector_slice find_max_slice(number_array nums) {
     if (nums.empty()) {
         throw std::runtime_error("empty number list");
@@ -48,4 +62,5 @@ int main(int argc, char * argv[]) {
     }
     auto res = find_max_slice(t_1);
     std::cout << "]" << " is  " << std::get<0>(res) << " <--> " << std::get<1>(res) << " : " << std::get<2>(res) << std::endl;
+    //TODO: move the call and print to a function and invoke for a variety of test inputs
 }
