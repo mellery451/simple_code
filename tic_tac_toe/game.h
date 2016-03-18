@@ -24,11 +24,26 @@ public:
 
     void play();
 
+
+    /// @brief set a particular row/col on board
+    ///
+    /// only public for testing
+    ///
+    /// @param row
+    /// @param col
+    /// @param p
+    void set_box(int row, int col, player p);
+
+    /// @brief test if current board wins.
+    ///
+    /// only public to help facilitate testing
+    ///
+    /// @return
+    bool is_winning_board() const;
+    bool is_full_board() const;
 private:
     void ask_move(player p);
     void print_board(const std::string& prepend = "") const;
-    bool is_winning_board() const;
-    bool is_full_board() const;
 
     static std::string player_string(player p);
     static std::string box_entry_string(box_entry e);

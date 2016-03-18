@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <locale>
+#include <vector>
 #include "game.h"
 
 struct csv_reader: std::ctype<char> {
@@ -161,7 +162,7 @@ void game::ask_move(player p) {
         std::cin >> row >> col;
         if (row > 0 && row <= BOARD_SIZE && col > 0 && col <= BOARD_SIZE) {
             if (m_board[row-1][col-1] == box_entry::OPEN) {
-                m_board[row-1][col-1] = p == player::X_PLAYER ? box_entry::X_MARK : box_entry::O_MARK;
+                set_box(row, col, p);
                 done = true;
             }
             else {
@@ -172,6 +173,10 @@ void game::ask_move(player p) {
             std::cout << "INVALID coordindates - please try again..." << std::endl;
         }
     }
+}
+
+void game::set_box(int row, int col, player p) {
+    m_board[row-1][col-1] = (p == player::X_PLAYER) ? box_entry::X_MARK : box_entry::O_MARK;
 }
 
 void game::play() {

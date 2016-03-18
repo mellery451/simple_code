@@ -5,9 +5,8 @@ add_library("game" OBJECT
 
 add_executable(tic_tac_toe
   main.cpp
+  $<TARGET_OBJECTS:game>
 )
-
-target_link_libraries("tic_tac_toe" "game")
 
 include(LibFindMacros)
 # Use pkg-config to get hints about paths
@@ -25,10 +24,10 @@ include_directories( ${LIBCHECK_INCLUDE_DIR} )
 
 add_executable("game_test_driver"
   tests.cpp
+  $<TARGET_OBJECTS:game>
 )
 
 target_link_libraries("game_test_driver"
-  "game"
   ${LIBCHECK_LIBRARY}
 )
 

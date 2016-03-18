@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(simple_code)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 message(" == c flags == ${CMAKE_CXX_FLAGS}")
 message(" == dc flags == ${CMAKE_CXX_FLAGS_DEBUG}")
 message(" == rc flags == ${CMAKE_CXX_FLAGS_RELEASE}")
