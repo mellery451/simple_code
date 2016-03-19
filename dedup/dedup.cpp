@@ -6,15 +6,15 @@
 /*
  * Function: dedup
  *
- * Description: Given a c-string, eliminates any consequetive 
- * (repeating) characters. The string is modified in place, so 
+ * Description: Given a c-string, eliminates any consecutive
+ * (repeating) characters. The string is modified in place, so
  * must be non-const. The function returns the count of duplicates removed
  *
  * Implementation: Iterate over the string with two pointers - a "read" pointer
- * and a "write" pointer. The reader is always incremented, the writer is only 
+ * and a "write" pointer. The reader is always incremented, the writer is only
  * incremented when we encounter a non-consequetive (unique) character.
  *
- * TODO: This implementation only works for single byte character sets. 
+ * TODO: This implementation only works for single byte character sets.
  * Might want to consider adding utf-8 support (MBCS).
  *
  */
@@ -42,10 +42,10 @@ static int dedup(char * str)
     return removed;
 }
 
-int main(int argc, char * argv[]) 
+int main(int argc, char * argv[])
 {
     char testdata[] = "AAABBCABBBCCC";
-    char * pinput = (argc >= 2) ? argv[1] : testdata; 
+    char * pinput = (argc >= 2) ? argv[1] : testdata;
     std::cout << "original string is " << "[" <<  pinput << "]" << std::endl;
     int trimmed = dedup(pinput);
     std::cout << "trimmed " << trimmed << " characters, string is now [" << pinput << "]" << std::endl;
