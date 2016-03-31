@@ -4,6 +4,31 @@
 #include <string>
 #include <stdint.h>
 
+class MyA {
+public:
+    MyA() : three("I AM CLASS A") {};
+
+    friend std::ostream& operator<< (std::ostream&, const MyA&);
+private:
+    int one;
+    double two;
+    std::string three;
+};
+
+std::ostream& operator <<(std::ostream& stream, const MyA& obj_a) {
+    stream << obj_a.three;
+    return stream;
+}
+
+class MyB {
+public:
+    MyB() : one("I AM CLASS B") {};
+private:
+    std::string one;
+    int two;
+    double three;
+};
+
 int main(int argc, char * argv[]) {
 
     int32_t a_32 = 0;
@@ -29,4 +54,9 @@ int main(int argc, char * argv[]) {
     int32_t f_32 = 1 << 31;
     int16_t f_16 = static_cast<int16_t>(f_32);
     std::cout << "f_16 is " << f_16 << std::endl;
+
+    MyB obj_b;
+    //std::cout << "printing B as an A??" << *(MyA*(&obj_b)) << std::endl;
+    //DANGEROUS C-style cast...
+    std::cout << "printing B as an A??: " << *(MyA*)&obj_b << std::endl;
 }
