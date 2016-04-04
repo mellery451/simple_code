@@ -38,5 +38,6 @@ add_executable(strange_cast strange_cast.cpp)
 add_executable(merge_sorted merge_sorted.cpp)
 add_executable(string_switch string_switch.cpp)
 add_executable(max_sublist max_sublist/max_sublist.cpp)
+add_executable(linked_list linked_list.cpp)
 
 add_subdirectory(tic_tac_toe)
