@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <string>
 #include <exception>
+#include <algorithm>
+#include <tuple>
 
 // node class template
 template <typename K, typename V>
@@ -96,9 +98,16 @@ template <> struct KeyHash <std::string> {
     }
 };
 
+/// @brief hash_table class, implements simple hash table for
+/// key type K and value type V
+///
+/// @tparam K key type
+/// @tparam V value type
+/// @tparam F hash class to use for K
 template <typename K, typename V, typename F = KeyHash<K>>
 class hash_table {
 public:
+    // TODO: make starting table size configurable ?
     hash_table() : table_size(128) {
         table.reset(new std::unique_ptr<hash_node<K,V>> [table_size]);
     }
@@ -106,20 +115,41 @@ public:
     ~hash_table() {
     }
 
+    /// @brief get a value from the table.
+    ///
+    /// @param key the key to lookup
+    ///
+    /// @return value for key, throws and exception if not found.
+    /// If you don't want the exception, call has_key first to check for existence.
     V get(const K& key) {
-        hash_node<K,V>* node = get_node(key);
-        if(node) {
-            return node->value;
+        auto nodes = get_node(key, table.get(), table_size);
+        if(std::get<0>(nodes)) {
+            return std::get<0>(nodes)->value;
         }
         else {
             throw std::runtime_error("table entry not found");
         }
     }
 
+    /// @brief check for existence of key in table
+    ///
+    /// @param key
+    ///
+    /// @return true if key is found, false otherwise
     bool has_key(const K& key) {
-        return (get_node(key) != nullptr);
+        return (std::get<0>(get_node(key, table.get(), table_size)) != nullptr);
     }
 
+    /// @brief insert a value in the hash table.
+    ///
+    /// if an entry with a matching key is found, the value is updated.
+    /// Otherwise a new node is inserted in the table with the specified value
+    /// @note This method potentially causes the table to rehash if
+    /// the density of the current table exceeds the internal load factor. As such, insert
+    /// operations will occassionally (but rarely) be more expensive that simple insertion.
+    ///
+    /// @param key
+    /// @param value
     void insert(const K& key, const V& value) {
         if(exceeds_load_factor()) {
             rehash();
@@ -127,39 +157,36 @@ public:
         insert_raw(key, value, table.get(), table_size);
     }
 
+    /// @brief remove a key from the table.
+    ///
+    /// silently does nothing if the key is not found
+    ///
+    /// @param key
     void remove(const K& key) {
-        /*
-        unsigned long hashValue = hashFunc(key);
-        HashNode<K, V> *prev = NULL;
-        HashNode<K, V> *entry = table[hashValue];
+        hash_node<K,V>* entry;
+        hash_node<K,V>* prev;
+        uint32_t bucket_val;
+        std::tie(entry, prev, bucket_val) = get_node(key, table.get(), table_size);
 
-        while (entry != NULL && entry->getKey() != key) {
-            prev = entry;
-            entry = entry->getNext();
-        }
-
-        if (entry == NULL) {
-            // key not found
-            return;
-        }
-        else {
-            if (prev == NULL) {
+        if (entry) {
+            if (prev == nullptr) {
                 // remove first bucket of the list
-                table[hashValue] = entry->getNext();
+                table[bucket_val] = std::move(entry->next);
             } else {
-                prev->setNext(entry->getNext());
+                prev->next = std::move(entry->next);
             }
-            delete entry;
         }
-        */
+        // else - is this an error ?
     }
+
     typedef struct stats {
         size_t table_size;
         float load_factor;
+        uint32_t max_chain;
     } stats;
 
     stats get_stats(void) {
-        return {table_size, get_load_factor()};
+        return {table_size, get_load_factor(), get_max_chain()};
     }
 
 private:
@@ -169,7 +196,7 @@ private:
         std::unique_ptr< std::unique_ptr<hash_node<K,V>> []> new_table(new std::unique_ptr<hash_node<K,V>> [new_table_size]);
         for (size_t index = 0; index < table_size; ++index) {
             hash_node<K, V> *entry = table[index].get();
-            while (entry != NULL) {
+            while (entry != nullptr) {
                 insert_raw(entry->key, entry->value, new_table.get(), new_table_size);
                 entry = entry->next.get();
             }
@@ -180,18 +207,13 @@ private:
     }
 
     void insert_raw(const K &key, const V &value, std::unique_ptr<hash_node<K,V>> this_table[], size_t this_table_size) {
-        uint32_t bucket_val = hash_func(key) % this_table_size;
-        hash_node<K, V> *prev = NULL;
-        hash_node<K, V> *entry = this_table[bucket_val].get();
-
-        while (entry != NULL && entry->key != key) {
-            prev = entry;
-            entry = entry->next.get();
-        }
-
-        if (entry == NULL) {
+        hash_node<K,V>* entry;
+        hash_node<K,V>* prev;
+        uint32_t bucket_val;
+        std::tie(entry, prev, bucket_val) = get_node(key, this_table, this_table_size);
+        if (entry == nullptr) {
             entry = new hash_node<K, V>(key, value);
-            if (prev == NULL) {
+            if (prev == nullptr) {
                 // insert as first bucket
                 this_table[bucket_val].reset(entry);
             } else {
@@ -203,17 +225,36 @@ private:
         }
     }
 
-    hash_node<K,V>* get_node(const K& key) {
-        uint32_t bucket_val = hash_func(key) % table_size;
-        hash_node<K, V> *entry = table[bucket_val].get();
+    std::tuple< hash_node<K,V>*, hash_node<K,V>*, uint32_t >
+    get_node(const K& key, std::unique_ptr<hash_node<K,V>> this_table[], size_t this_table_size) {
+        uint32_t bucket_val = hash_func(key) % this_table_size;
+        hash_node<K, V> *prev = nullptr;
+        hash_node<K, V> *entry = this_table[bucket_val].get();
 
-        while (entry != NULL) {
+        while (entry != nullptr) {
             if (entry->key == key) {
-                return entry;
+                return std::make_tuple(entry, prev, bucket_val);
             }
+            prev = entry;
             entry = entry->next.get();
         }
-        return nullptr;
+        return std::make_tuple(nullptr, nullptr, bucket_val);
+    }
+
+    uint32_t get_max_chain(void) {
+        uint32_t max_chain = 0;
+        for (size_t index = 0; index < table_size; ++index) {
+            if (table[index].get()) {
+                uint32_t this_chain = 0;
+                hash_node<K, V> *entry = table[index].get();
+                while (entry != nullptr) {
+                    this_chain += 1;
+                    entry = entry->next.get();
+                }
+                max_chain = std::max(max_chain, this_chain);
+            }
+        }
+        return max_chain;
     }
 
     float get_load_factor(void) {
