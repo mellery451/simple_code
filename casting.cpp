@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 class MyA {
 public:
@@ -54,6 +54,18 @@ int main(int argc, char * argv[]) {
     int32_t f_32 = 1 << 31;
     int16_t f_16 = static_cast<int16_t>(f_32);
     std::cout << "f_16 is " << f_16 << std::endl;
+
+    uint8_t  g_u8 = 127;
+    int8_t   g_s8 = static_cast<int8_t>(g_u8);
+    std::cout << "g_s8 is " << static_cast<int>(g_s8) << std::endl;
+
+    uint8_t  h_u8 = 128;
+    int8_t   h_s8 = static_cast<int8_t>(h_u8);
+    std::cout << "h_s8 is " << static_cast<int>(h_s8) << std::endl;
+
+    uint8_t  i_u8 = 255;
+    int8_t   i_s8 = static_cast<int8_t>(i_u8);
+    std::cout << "i_s8 is " << static_cast<int>(i_s8) << std::endl;
 
     MyB obj_b;
     //std::cout << "printing B as an A??" << *(MyA*(&obj_b)) << std::endl;
