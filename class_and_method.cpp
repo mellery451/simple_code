@@ -9,14 +9,14 @@ class my_a;
 class my_b {
 public:
     my_b();
-    my_a* my_a() const;
+    my_a* get_my_a() const;
 private:
-    my_a* m_a_ptr;
+    class my_a* m_a_ptr;
 };
 
 int main(int argc, char * argv[]) {
     my_b  foo;
-    my_a* a_ptr = foo.my_a();
+    class my_a* a_ptr = foo.get_my_a();
     return 0;
 }
 
@@ -36,5 +36,11 @@ std::ostream& operator <<(std::ostream& stream, const my_a& obj_a) {
     return stream;
 }
 
-my_b::my_b() : m_a_ptr(new my_a()) {}
-my_b::my_a() { return m_a_ptr; }
+my_b::my_b() : m_a_ptr( new class my_a() )
+{
+}
+
+my_a* my_b::get_my_a() const
+{
+    return m_a_ptr;
+}

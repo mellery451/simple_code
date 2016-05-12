@@ -18,6 +18,18 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR};${CMAKE_MODULE_PATH}")
 
 enable_testing()
 
+include(LibFindMacros)
+# Use pkg-config to get hints about paths
+libfind_pkg_check_modules(LIBCHECK_PKGCONF check)
+find_path(LIBCHECK_INCLUDE_DIR
+    NAMES check.h
+    PATHS ${LIBCHECK_PKGCONF_INCLUDE_DIRS}
+)
+find_library(LIBCHECK_LIBRARY
+    NAMES check
+    PATHS ${LIBCHECK_PKGCONF_LIBRARY_DIRS}
+)
+
 add_subdirectory(cdx_tree)
 add_subdirectory(sum_bin)
 
@@ -43,3 +55,4 @@ add_executable(linked_list linked_list.cpp)
 
 add_subdirectory(tic_tac_toe)
 add_subdirectory(simple_hash_table)
+
