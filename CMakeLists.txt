@@ -56,3 +56,5 @@ add_executable(linked_list linked_list.cpp)
 add_subdirectory(tic_tac_toe)
 add_subdirectory(simple_hash_table)
 
+add_subdirectory(ripple)
+
