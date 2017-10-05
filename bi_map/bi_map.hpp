@@ -1,4 +1,3 @@
-/* Copyright 2014-2015 Ripple Labs, Inc. All Rights Reserved */
 #pragma once
 
 #include <algorithm>

@@ -1,7 +1,7 @@
 
 include_directories( ${LIBCHECK_INCLUDE_DIR} )
 
-add_executable("ripple_01"
+add_executable("bi_map"
   hw_01.cpp
 )
 

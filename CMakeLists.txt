@@ -4,12 +4,18 @@ project(simple_code)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} \
+# -O3 \
+# -foobar")
+
 message(" == c flags == ${CMAKE_CXX_FLAGS}")
 message(" == dc flags == ${CMAKE_CXX_FLAGS_DEBUG}")
 message(" == rc flags == ${CMAKE_CXX_FLAGS_RELEASE}")
+message(" == rwdi flags == ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 message(" == 1l flags == ${CMAKE_EXE_LINKER_FLAGS}")
 message(" == d1l flags == ${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
 message(" == r1l flags == ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+message(" == rwdil flags == ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
 message(" == 2l flags == ${CMAKE_SHARED_LINKER_FLAGS}")
 message(" == d2l flags == ${CMAKE_SHARED_LINKER_FLAGS_DEBUG}")
 message(" == 3l flags == ${CMAKE_STATIC_LINKER_FLAGS}")
@@ -56,5 +62,6 @@ add_executable(linked_list linked_list.cpp)
 add_subdirectory(tic_tac_toe)
 add_subdirectory(simple_hash_table)
 
-add_subdirectory(ripple)
+add_subdirectory(bi_map)
 
+add_subdirectory(cmake_dep)
