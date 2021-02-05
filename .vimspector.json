@@ -1,0 +1,23 @@
+{
+  "configurations": {
+    "Vim - run a test": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "type":    "cppdbg",
+        "request": "launch",
+        "program": "${workspaceRoot}/other/a.out",
+        "args": [ ],
+        "cwd": "${workspaceRoot}/other",
+        "environment": [
+          { "name": "SOMEENV", "value": "${workspaceRoot}/other" }
+        ],
+        "externalConsole": true,
+        "stopAtEntry": true,
+        "MIMode": "gdb",
+        "logging": {
+          "engineLogging": false
+        }
+      }
+    }
+  }
+}
