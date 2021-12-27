@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 void rev_chars(char * pstart, char * pend)
 {
