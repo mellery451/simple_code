@@ -48,6 +48,7 @@ add_executable(get_my_ip get_my_ip/get_ip.cpp)
 add_executable(hex_to hex_to/hex_to.cpp)
 add_executable(rev_words rev_words/rev_words.cpp)
 add_executable(ns_thing namespace_thing/test.cpp)
+add_executable(simple_increment simple_increment.cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 add_executable(ptr_access ptr_access.cpp)
