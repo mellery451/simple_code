@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstdint>
+#include <limits>
 
 class MyA {
 public:
@@ -70,5 +71,13 @@ int main(int argc, char * argv[]) {
     MyB obj_b;
     //std::cout << "printing B as an A??" << *(MyA*(&obj_b)) << std::endl;
     //DANGEROUS C-style cast...
-    std::cout << "printing B as an A??: " << *(MyA*)&obj_b << std::endl;
+    //std::cout << "printing B as an A??: " << *(MyA*)&obj_b << std::endl;
+
+
+    char c_low = std::numeric_limits<char>::min();
+    char c_high = std::numeric_limits<char>::max();
+    std::cout << "char min as int: " << static_cast<int>(c_low) << std::endl;
+    std::cout << "char max as int: " << static_cast<int>(c_high) << std::endl;
+    std::cout << "char min as unsigned char: " << static_cast<int>(static_cast<unsigned char>(static_cast<int>(c_low))) << std::endl;
+    std::cout << "char max as unsigned char: " << static_cast<int>(static_cast<unsigned char>(static_cast<int>(c_high))) << std::endl;
 }
