@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.1)
 
 project(simple_code)
 
@@ -36,9 +35,11 @@ find_library(LIBCHECK_LIBRARY
     PATHS ${LIBCHECK_PKGCONF_LIBRARY_DIRS}
 )
 
+set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(cdx_tree)
 add_subdirectory(sum_bin)
 
+add_executable(misc misc.cpp)
 add_executable(atoi atoi/atoi.cpp)
 add_executable(dedup dedup/dedup.cpp)
 add_executable(djb_hash djb_hash/hash.cpp)
