@@ -7,7 +7,6 @@
 #include <limits>
 #include <string>
 #include <vector>
-#include <numeric>
 
 using namespace std;
 
@@ -46,6 +45,8 @@ public:
       delete pcur;
       pcur = pnext;
     }
+    head = nullptr;
+    size = 0;    
   }
 
   bool push_front(const T &val) {
