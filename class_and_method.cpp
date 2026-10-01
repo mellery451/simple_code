@@ -14,9 +14,12 @@ private:
     class my_a* m_a_ptr;
 };
 
+std::ostream& operator <<(std::ostream& stream, const my_a& obj_a); //PREDECL
+
 int main(int argc, char * argv[]) {
     my_b  foo;
     class my_a* a_ptr = foo.get_my_a();
+    std::cout << *a_ptr << "\n";
     return 0;
 }
 

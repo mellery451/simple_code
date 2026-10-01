@@ -29,11 +29,26 @@ public:
   List() : head(nullptr), size(0) {}
 
   List(const vector<T> &l) : List() {
+#if 1
     ListNode<T> **ppcur = &head;
     for (auto const &entry : l) {
       *ppcur = new ListNode<T>{entry};
       ppcur = &((*ppcur)->next);
     }
+#else
+    // using single pointers, you just have to assign directly to the 
+    ListNode<T> *plast = nullptr;
+    for (auto const &entry : l) {
+      if (!plast) {
+       head = new ListNode<T>{entry};
+       plast = head;
+      }
+      else {
+        plast->next = new ListNode<T>{entry};
+        plast = plast->next;
+      }
+    }
+#endif
     size = l.size();
   }
 
