@@ -94,10 +94,16 @@ void testThread(Semaphore &sema, ThreadArgs args) {
 int main() {
     // Parse in data
     // First value is the semaphore initial value
-    uint32_t initialVal = 0;
+    // Must be >= 1: every thread waits before it posts, so with 0 all threads
+    // block in wait() forever. Read signed so a negative value isn't wrapped.
+    int initialVal = 0;
     if (!(std::cin >> initialVal)) return 0;
+    if (initialVal < 1) {
+        std::cerr << "error: initial semaphore value must be >= 1 (got " << initialVal << ")\n";
+        return 1;
+    }
 
-    Semaphore testSemaphore(initialVal);
+    Semaphore testSemaphore(static_cast<uint32_t>(initialVal));
 
     // Second value is the number of threads
     size_t numThreads = 0;
@@ -111,6 +117,11 @@ int main() {
     for (size_t i = 0; i < numThreads; i++) {
         ThreadArgs args{};
         if (!(std::cin >> args.waitTime >> args.postTime)) break;
+        if (args.waitTime < 0 || args.postTime < 0) {
+            std::cerr << "error: thread times must be >= 0\n";
+            for (auto &t : threads) t.join();
+            return 1;
+        }
 
         threads.emplace_back(testThread, std::ref(testSemaphore), args);
     }
