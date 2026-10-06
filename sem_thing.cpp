@@ -7,6 +7,17 @@
 #include <thread>
 #include <vector>
 
+// Test cases (same results for both Semaphore implementations).
+// Input format: <initial value> <num threads>, then one "<waitTime> <postTime>"
+// line (ms) per thread.
+//
+//   Input                                  Result
+//   -------------------------------------  ------------------------------------
+//   1 3 / 0 100 / 10 50 / 20 10            SUCCESS, exit 0
+//   0 2 / 0 50 / 100 10                    error: initial value must be >= 1, exit 1
+//   -1 2 / 0 50 / 100 10                   error: initial value must be >= 1 (got -1), exit 1
+//   2 3 / 0 50 / 10 -5 / 20 10             error: thread times must be >= 0, exit 1
+
 // Select the implementation at compile time:
 //   default:            mutex + condition_variable
 //   -DSEM_USE_ATOMIC:   lock-free std::atomic (CAS loop, spins with yield)
